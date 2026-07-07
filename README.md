@@ -104,9 +104,12 @@ src/main/resources/application.properties
 Example:
 
 ```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/teampulse_db
-spring.datasource.username=root
+spring.datasource.url=jdbc:postgresql://localhost:5432/teampulse_db
+spring.datasource.username=postgres
 spring.datasource.password=your_password
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 ```
 
 Also configure:
