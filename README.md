@@ -89,7 +89,7 @@ src
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/<your-username>/teampulse-backend.git
+git clone https://github.com/Oshada-Nethmina/teampulse-backend.git
 cd teampulse-backend
 ```
 
