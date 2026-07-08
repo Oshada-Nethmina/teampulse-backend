@@ -1,6 +1,9 @@
 package com.teampulse.backend.security;
 
 import com.teampulse.backend.entity.User;
+import com.teampulse.backend.enums.Role;
+import lombok.Getter;
+import lombok.NonNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
+@Getter
 public class UserPrincipal implements UserDetails {
     private final Long id;
     private final String email;
