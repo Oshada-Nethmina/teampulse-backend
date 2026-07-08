@@ -1,5 +1,6 @@
 package com.teampulse.backend.entity;
 
+import com.teampulse.backend.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
