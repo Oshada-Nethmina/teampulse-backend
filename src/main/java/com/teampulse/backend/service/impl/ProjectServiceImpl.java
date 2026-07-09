@@ -3,29 +3,41 @@ package com.teampulse.backend.service.impl;
 import com.teampulse.backend.dto.request.ProjectRequest;
 import com.teampulse.backend.dto.response.ProjectResponse;
 import com.teampulse.backend.entity.Project;
+import com.teampulse.backend.entity.User;
 import com.teampulse.backend.exception.BadRequestException;
 import com.teampulse.backend.exception.ResourceNotFoundException;
 import com.teampulse.backend.repository.ProjectRepository;
+import com.teampulse.backend.repository.UserRepository;
 import com.teampulse.backend.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository projectRepository;
+    private final UserRepository userRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<ProjectResponse> listActiveProjects() {
-        return projectRepository.findByActiveTrue().stream().map(this::toResponse).toList();
+        return projectRepository.findByActiveTrue()
+                .stream()
+                .map(this::toResponse)
+                .toList();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ProjectResponse> listAllProjects() {
-        return projectRepository.findAll().stream().map(this::toResponse).toList();
+        return projectRepository.findAll()
+                .stream()
+                .map(this::toResponse)
+                .toList();
     }
 
     @Transactional
@@ -37,9 +49,21 @@ public class ProjectServiceImpl implements ProjectService {
         Project project = Project.builder()
                 .name(projectRequest.getName())
                 .description(projectRequest.getDescription())
-                .active(true)
+                .active(projectRequest.getActive())
                 .build();
-        return toResponse(projectRepository.save(project));
+
+        if (projectRequest.getAssignedMemberIds() != null &&
+                !projectRequest.getAssignedMemberIds().isEmpty()) {
+
+            List<User> members =
+                    userRepository.findAllById(projectRequest.getAssignedMemberIds());
+
+            project.setMembers(new HashSet<>(members));
+        }
+
+        Project savedProject = projectRepository.save(project);
+
+        return toResponse(savedProject);
     }
 
     @Override
@@ -54,10 +78,22 @@ public class ProjectServiceImpl implements ProjectService {
             throw new BadRequestException("A project with this name already exists");
         }
 
-        project.setName(newName);
+        project.setName(projectRequest.getName());
         project.setDescription(projectRequest.getDescription());
+        project.setActive(projectRequest.getActive());
 
-        return toResponse(projectRepository.save(project));
+            project.setMembers(new HashSet<>());
+
+            if (projectRequest.getAssignedMemberIds() != null) {
+
+                List<User> members =
+                        userRepository.findAllById(projectRequest.getAssignedMemberIds());
+
+                project.setMembers(new HashSet<>(members));
+            }
+        Project updatedProject = projectRepository.save(project);
+
+        return toResponse(updatedProject);
     }
 
     @Override
@@ -71,9 +107,9 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ProjectResponse findProject(Long id) {
         Project project = getProjectById(id);
-
         return toResponse(project);
     }
 
@@ -83,6 +119,18 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     private ProjectResponse toResponse(Project project) {
-        return new ProjectResponse(project.getId(), project.getName(), project.getDescription(), project.getActive());
+
+        return ProjectResponse.builder()
+                .id(project.getId())
+                .name(project.getName())
+                .description(project.getDescription())
+                .active(project.getActive())
+                .assignedMemberIds(
+                        project.getMembers()
+                                .stream()
+                                .map(User::getUserId)
+                                .toList()
+                )
+                .build();
     }
 }

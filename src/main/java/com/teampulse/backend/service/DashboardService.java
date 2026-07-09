@@ -5,6 +5,6 @@ import com.teampulse.backend.dto.response.DashboardSummaryResponse;
 import java.time.LocalDate;
 
 public interface DashboardService {
-    DashboardSummaryResponse getDashboardSummary(LocalDate weekStartDate);
+    DashboardSummaryResponse getDashboardSummary(Long projectId, LocalDate weekStartDate);
 
 }

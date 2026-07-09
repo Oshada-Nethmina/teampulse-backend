@@ -22,12 +22,14 @@ public class DashboardController {
     @GetMapping("/summary")
     @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<DashboardSummaryResponse> getDashboardSummary(
+            @RequestParam(required = false)
+            Long projectId,
 
             @RequestParam(required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
             LocalDate weekStartDate) {
 
         return ResponseEntity.ok(
-                dashboardService.getDashboardSummary(weekStartDate));
+                dashboardService.getDashboardSummary(projectId, weekStartDate));
     }
 }

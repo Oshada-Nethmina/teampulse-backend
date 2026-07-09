@@ -4,6 +4,7 @@ import com.teampulse.backend.entity.WeeklyReport;
 import com.teampulse.backend.enums.ReportStatus;
 import com.teampulse.backend.repository.WeeklyReportRepository;
 import com.teampulse.backend.service.AiChatService;
+import com.teampulse.backend.specification.WeeklyReportSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -90,11 +91,14 @@ public class AiChatServiceImpl implements AiChatService {
     private String buildReportContext() {
 
         LocalDate fromDate = LocalDate.now().minusWeeks(CONTEXT_WEEKS);
-        List<WeeklyReport> reports = reportRepository.search(
-                null,
-                null,
-                fromDate,
-                LocalDate.now().plusDays(7));
+        List<WeeklyReport> reports = reportRepository.findAll(
+                WeeklyReportSpecification.filter(
+                        null,
+                        null,
+                        fromDate,
+                        LocalDate.now().plusDays(7)
+                )
+        );
 
         StringBuilder contextBuilder = new StringBuilder();
 
