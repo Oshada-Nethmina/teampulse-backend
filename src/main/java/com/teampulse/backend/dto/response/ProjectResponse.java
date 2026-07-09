@@ -2,6 +2,8 @@ package com.teampulse.backend.dto.response;
 
 import lombok.*;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -11,4 +13,5 @@ public class ProjectResponse {
     private String name;
     private String description;
     private Boolean active;
+    private List<Long> assignedMemberIds;
 }

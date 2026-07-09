@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,4 +20,7 @@ public class ProjectRequest {
 
     @Size(max = 500)
     private String description;
+
+    private Boolean active;
+    private List<Long> assignedMemberIds;
 }
