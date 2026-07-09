@@ -19,7 +19,7 @@ import java.time.LocalDate;
 public class DashboardController {
     private final DashboardService dashboardService;
 
-    @GetMapping
+    @GetMapping("/summary")
     @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<DashboardSummaryResponse> getDashboardSummary(
 
