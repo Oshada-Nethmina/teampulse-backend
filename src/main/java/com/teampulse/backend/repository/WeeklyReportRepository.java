@@ -29,4 +29,16 @@ public interface WeeklyReportRepository extends JpaRepository<WeeklyReport, Long
             @Param("from") LocalDate from,
             @Param("to") LocalDate to
     );
+    List<WeeklyReport> findByWeekStartDate(LocalDate weekStartDate);
+    List<WeeklyReport> findTop20ByOrderByUpdatedAtDesc();
+    @Query("""
+    SELECT r
+    FROM WeeklyReport r
+    WHERE r.weekStartDate = :weekStartDate
+      AND r.blockers IS NOT NULL
+      AND TRIM(r.blockers) <> ''
+""")
+    List<WeeklyReport> findOpenBlockersForWeek(
+            @Param("weekStartDate") LocalDate weekStartDate
+    );
 }
