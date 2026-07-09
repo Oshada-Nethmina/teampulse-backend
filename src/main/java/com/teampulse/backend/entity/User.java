@@ -2,14 +2,14 @@ package com.teampulse.backend.entity;
 
 import com.teampulse.backend.enums.Role;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -36,6 +36,10 @@ public class User {
     @Column(nullable = false)
     @Builder.Default
     private Boolean active = true;
+
+    @ManyToMany(mappedBy = "members")
+    @Builder.Default
+    private Set<Project> projects = new HashSet<>();
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

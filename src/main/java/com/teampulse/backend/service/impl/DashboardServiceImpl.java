@@ -10,6 +10,7 @@ import com.teampulse.backend.enums.Role;
 import com.teampulse.backend.repository.UserRepository;
 import com.teampulse.backend.repository.WeeklyReportRepository;
 import com.teampulse.backend.service.DashboardService;
+import com.teampulse.backend.specification.WeeklyReportSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +35,7 @@ public class DashboardServiceImpl implements DashboardService {
             DateTimeFormatter.ofPattern("MMM d");
 
     @Override
-    public DashboardSummaryResponse getDashboardSummary(LocalDate weekStartDate) {
+    public DashboardSummaryResponse getDashboardSummary(Long projectId, LocalDate weekStartDate) {
         LocalDate targetWeek = weekStartDate != null
                 ? weekStartDate
                 : getCurrentWeekStart();
@@ -73,6 +74,7 @@ public class DashboardServiceImpl implements DashboardService {
                 .recentActivity(recentActivity)
                 .build();
     }
+
 
     private List<SubmissionStatusResponse> getSubmissionStatus(List<User> teamMembers, List<WeeklyReport> weeklyReports, LocalDate targetWeek) {
 
@@ -138,16 +140,21 @@ public class DashboardServiceImpl implements DashboardService {
 
     private Map<String, Long> getProjectWorkload(LocalDate targetWeek) {
 
-        return reportRepository.search(
+        List<WeeklyReport> reports = reportRepository.findAll(
+                WeeklyReportSpecification.filter(
                         null,
                         null,
                         targetWeek.minusWeeks(11),
-                        targetWeek.plusDays(6))
-                .stream()
+                        targetWeek.plusDays(6)
+                )
+        );
+
+        return reports.stream()
                 .filter(report -> report.getProject() != null)
                 .collect(Collectors.groupingBy(
                         report -> report.getProject().getName(),
-                        Collectors.counting()));
+                        Collectors.counting()
+                ));
     }
 
     private Map<String, Double> getTasksCompletedTrend(LocalDate targetWeek) {
@@ -203,4 +210,6 @@ public class DashboardServiceImpl implements DashboardService {
 
         return today.minusDays(today.getDayOfWeek().getValue() - 1L);
     }
+
+
 }

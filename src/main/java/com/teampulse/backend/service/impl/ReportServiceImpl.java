@@ -12,6 +12,7 @@ import com.teampulse.backend.repository.ProjectRepository;
 import com.teampulse.backend.repository.UserRepository;
 import com.teampulse.backend.repository.WeeklyReportRepository;
 import com.teampulse.backend.service.ReportService;
+import com.teampulse.backend.specification.WeeklyReportSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -80,6 +81,7 @@ public class ReportServiceImpl implements ReportService {
 
 
     @Override
+    @Transactional(readOnly = true)
     public List<ReportResponse> getUserReports(Long userId) {
         return reportRepository.findByUser_UserIdOrderByWeekStartDateDesc(userId)
                 .stream()
@@ -88,6 +90,7 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ReportResponse getReportById(Long userId, Long reportId) {
         WeeklyReport report = getReportEntityById(reportId);
 
@@ -99,8 +102,15 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ReportResponse> searchReports(Long userId, Long projectId, LocalDate from, LocalDate to) {
-        return reportRepository.search(userId, projectId, from, to)
+        return reportRepository.findAll(
+                        WeeklyReportSpecification.filter(
+                                userId,
+                                projectId,
+                                from,
+                                to
+                        ))
                 .stream()
                 .map(this::mapToResponse)
                 .toList();
@@ -108,7 +118,14 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public List<WeeklyReport> searchRawReports(Long userId, Long projectId, LocalDate from, LocalDate to) {
-        return reportRepository.search(userId, projectId, from, to);
+        return reportRepository.findAll(
+                WeeklyReportSpecification.filter(
+                        userId,
+                        projectId,
+                        from,
+                        to
+                )
+        );
     }
 
     private void validateWeekDates(ReportRequest reportRequest) {
