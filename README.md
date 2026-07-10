@@ -1,289 +1,158 @@
 # TeamPulse Backend
 
-Backend API for the **TeamPulse – Weekly Report Generator & Team Dashboard** technical assignment.
-
-This application provides a secure REST API that enables team members to submit weekly reports and allows managers to monitor team progress through dashboards and analytics.
-
----
+A **Spring Boot REST API** powering the **Weekly Report Generator & Team Dashboard** application. It provides secure authentication, report management, project management, analytics, and AI assistant integration.
 
 ## Features
 
-### Authentication & Authorization
-# TeamPulse Frontend
-
-A modern **Next.js** application for the **Weekly Report Generator & Team Dashboard**. It enables team members to submit weekly reports and managers to monitor team performance through an interactive dashboard.
-
-## Features
-
+* REST API
 * JWT Authentication
-* Role-Based Access Control
+* Role-Based Authorization
 * Weekly Report Management
-* Manager Dashboard
 * Project Management
-* Charts & Analytics
-* AI Chat Assistant UI (API key required)
-* Responsive Design
-* Built with reusable React components
+* Dashboard Analytics
+* Request Validation
+* PostgreSQL Integration
+* AI Assistant Integration (OpenAI Ready)
 
 ## Tech Stack
 
-* Next.js
-* React
-* TypeScript
-* Tailwind CSS
-* Axios
-* React Hook Form
-* Recharts
-* React Hot Toast
+* Java 21
+* Spring Boot
+* Spring Security
+* Spring Data JPA (Hibernate)
+* PostgreSQL
+* JWT
+* Maven
 
 ## Prerequisites
 
-* Node.js 18+
-* npm or yarn
-* Backend API running
+* Java 21
+* Maven
+* PostgreSQL
 
 ## Installation
 
 Clone the repository:
 
 ```bash
-git clone <frontend-repository-url>
-cd teampulse-frontend
+git clone <backend-repository-url>
+cd teampulse-backend
 ```
 
 Install dependencies:
 
 ```bash
-npm install
+mvn clean install
 ```
 
-## Environment Variables
+## Database Setup
 
-Create a `.env.local` file.
+Create a PostgreSQL database:
 
-```env
-NEXT_PUBLIC_API_URL=http://localhost:8080/api
+```sql
+CREATE DATABASE teampulse_db;
 ```
 
-## Running the Application
-
-Development mode:
-
-```bash
-npm run dev
-```
-
-Production build:
-
-```bash
-npm run build
-npm start
-```
-
-The application will be available at:
-
-```
-http://localhost:3000
-```
-
-## Project Structure
-
-```
-src/
- ├── app/
- ├── components/
- ├── hooks/
- ├── lib/
- ├── services/
- ├── types/
- └── utils/
-```
-
-## AI Assistant
-
-The frontend includes an AI Chat interface.
-
-To enable AI responses:
-
-* Configure the backend with a valid OpenAI API key.
-* Ensure the backend AI endpoint is available.
-
-Without an API key, the chat interface will be visible, but AI responses will not be generated.
-
-## Available Scripts
-
-```bash
-npm run dev
-npm run build
-npm run lint
-```
-
-## Backend Repository
-
-Run the backend before starting the frontend.
-
-## License
-
-This project was developed as part of a technical assessment.
-
-* JWT Authentication
-* User Registration & Login
-* BCrypt Password Encryption
-* Role-Based Access Control (Team Member / Manager)
-
-### Weekly Reports
-
-* Create weekly reports
-* Edit reports
-* Submit reports
-* View report history
-* Standardized report structure
-
-### Team Dashboard
-
-* View reports from all team members
-* Filter by team member
-* Filter by project/category
-* Filter by week or date range
-* Track report submission status
-
-### Project Management
-
-* Create projects/categories
-* Update projects
-* Delete projects
-* Assign users to projects *(optional)*
-
-### Dashboard Analytics
-
-* Weekly report submission metrics
-* Submission compliance tracking
-* Open blockers count
-* Team workload insights
-* Report trends and activity summaries
-
----
-
-## Technology Stack
-
-* Java 17
-* Spring Boot
-* Spring Security
-* JWT Authentication
-* Spring Data JPA (Hibernate)
-* PostgreSQL 
-* Maven
-* Lombok
-
----
-
-## Project Structure
-
-```text
-src
-├── config
-├── controller
-├── dto
-├── entity
-├── exception
-├── repository
-├── security
-├── service
-└── util
-```
-
----
-
-## Getting Started
-
-### Prerequisites
-
-* Java 17+
-* Maven 3.9+
-* PostgreSQL 15+ (or later)
-
-### Clone the Repository
-
-```bash
-git clone https://github.com/Oshada-Nethmina/teampulse-backend.git
-cd teampulse-backend
-```
-
-### Configure Database
-
-Update the database configuration in:
-
-```text
-src/main/resources/application.properties
-```
-
-Example:
+Update `application.properties`:
 
 ```properties
 spring.datasource.url=jdbc:postgresql://localhost:5432/teampulse_db
-spring.datasource.username=postgres
+spring.datasource.username=your_username
 spring.datasource.password=your_password
 
 spring.jpa.hibernate.ddl-auto=update
-spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+
+jwt.secret=your_jwt_secret
+jwt.expiration=86400000
 ```
 
-Also configure:
+### Optional AI Configuration
+
+To enable the AI Assistant, configure your OpenAI API key:
 
 ```properties
-app.jwt.secret=your-secret-key
-app.jwt.expiration-ms=86400000
-app.cors.allowed-origins=http://localhost:3000
+openai.api.key=YOUR_OPENAI_API_KEY
 ```
 
-### Run the Application
+If this property is not configured, the AI chat endpoint will be unavailable, while the rest of the application will continue to function normally.
+
+## Running the Application
+
+Start the server:
 
 ```bash
 mvn spring-boot:run
 ```
 
+Or:
+
+```bash
+./mvnw spring-boot:run
+```
+
 The backend will be available at:
 
-```text
+```
 http://localhost:8080
 ```
 
----
+## API Documentation
 
-## Authentication
+If Swagger/OpenAPI is enabled:
 
-Protected endpoints require a JWT access token.
-
-Include the token in every authenticated request:
-
-```http
-Authorization: Bearer <jwt-token>
+```
+http://localhost:8080/swagger-ui/index.html
 ```
 
----
+## Project Structure
 
-## REST API
+```
+src/main/java/
+ ├── config/
+ ├── controller/
+ ├── dto/
+ ├── entity/
+ ├── exception/
+ ├── repository/
+ ├── security/
+ ├── service/
+ └── util/
+```
 
-The backend exposes REST APIs for:
+## Running the Database
 
-* Authentication
-* Users
-* Weekly Reports
-* Projects
-* Dashboard
-* Analytics
+1. Install PostgreSQL.
+2. Create the database:
 
----
+```sql
+CREATE DATABASE teampulse_db;
+```
 
-## Project Status
+3. Update the database credentials in `application.properties`.
+4. Start PostgreSQL.
+5. Run the Spring Boot application.
 
-This project is being developed as part of a technical assignment.
+Hibernate will automatically create/update the database schema based on your configuration.
 
-Current implementation includes:
+## AI Assistant
 
-* JWT Authentication
-* Spring Security
-* User Management
+The backend includes an AI integration layer.
 
-Additional modules including Weekly Reports, Dashboard, Project Management, Analytics, and AI Assistant will be implemented incrementally.
+Current implementation:
 
+* AI chat endpoint
+* Prompt construction
+* Report data retrieval
+* Conversation handling
+
+A valid OpenAI API key is required to generate AI responses.
+
+## Build
+
+```bash
+mvn clean package
+```
+
+## License
+
+This project was developed as part of a technical assessment.
