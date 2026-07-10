@@ -12,7 +12,7 @@ A **Spring Boot REST API** powering the **Weekly Report Generator & Team Dashboa
 * Dashboard Analytics
 * Request Validation
 * PostgreSQL Integration
-* AI Assistant Integration (OpenAI Ready)
+* AI Assistant Integration (Anthropic Claude Ready)
 
 ## Tech Stack
 
