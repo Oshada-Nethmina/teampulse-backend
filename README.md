@@ -16,7 +16,7 @@ A **Spring Boot REST API** powering the **Weekly Report Generator & Team Dashboa
 
 ## Tech Stack
 
-* Java 21
+* Java 17
 * Spring Boot
 * Spring Security
 * Spring Data JPA (Hibernate)
@@ -26,7 +26,7 @@ A **Spring Boot REST API** powering the **Weekly Report Generator & Team Dashboa
 
 ## Prerequisites
 
-* Java 21
+* Java 17
 * Maven
 * PostgreSQL
 
