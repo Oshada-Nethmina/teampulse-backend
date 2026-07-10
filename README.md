@@ -35,7 +35,7 @@ A **Spring Boot REST API** powering the **Weekly Report Generator & Team Dashboa
 Clone the repository:
 
 ```bash
-git clone <backend-repository-url>
+git clone https://github.com/Oshada-Nethmina/teampulse-backend.git
 cd teampulse-backend
 ```
 
@@ -71,7 +71,7 @@ jwt.expiration=86400000
 To enable the AI Assistant, configure your OpenAI API key:
 
 ```properties
-openai.api.key=YOUR_OPENAI_API_KEY
+anthropic.api-key=YOUR_ANTHROPIC_API_KEY
 ```
 
 If this property is not configured, the AI chat endpoint will be unavailable, while the rest of the application will continue to function normally.
@@ -96,13 +96,6 @@ The backend will be available at:
 http://localhost:8080
 ```
 
-## API Documentation
-
-If Swagger/OpenAPI is enabled:
-
-```
-http://localhost:8080/swagger-ui/index.html
-```
 
 ## Project Structure
 
@@ -153,6 +146,3 @@ A valid OpenAI API key is required to generate AI responses.
 mvn clean package
 ```
 
-## License
-
-This project was developed as part of a technical assessment.
